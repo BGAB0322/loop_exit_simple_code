@@ -1,20 +1,29 @@
-#include <cstdio>
-#include <signal.h> //signal header
+#include <iostream>
+#include <windows.h> //ConsoleHandler()
+#include <conio.h> //_getch()
 
-bool signal_handle = false;
+uint8_t ascii_number = 0;
 
-void interruptSignal(int signal)
+BOOL WINAPI ConsoleHandler(DWORD dwType)
 {
-    (void)signal;
-    signal_handle = true;  
+    if (dwType == CTRL_C_EVENT)
+    {
+        ascii_number = _getch();
+        printf("Interrupted Ctrl+C\n");
+    }
+    
+    return TRUE;
 }
 
 int main()
 {
-    signal(SIGINT, interruptSignal);
-
-    while (true && !signal_handle)
+    while (true && ascii_number != 3)
     {
-        printf("Hello World!\n");
+        if (!SetConsoleCtrlHandler((PHANDLER_ROUTINE)ConsoleHandler, TRUE))
+        {
+            return EXIT_FAILURE;
+        }
+        
+        std::cout << "Hello World!\n";
     }
 }
