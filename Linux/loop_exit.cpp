@@ -1,5 +1,5 @@
 #include <cstdio>
-#include <signal.h> //signal 헤더
+#include <signal.h> //signal header
 
 bool signal_handle = false;
 
